@@ -1,0 +1,82 @@
+body {
+    min-width:550px; /* suppose you want minimun width of 1000px */
+    width: auto !important;  /* Firefox will set width as auto */
+    width:550px;             /* As IE ignores !important it will set width as 1000px; */
+}
+
+spam.custom-banner {
+    font-size: 300%;
+    color: whitesmoke;
+}
+
+.main-char-stats {
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    /*color: whitesmoke;*/
+    font-family: Helvetica, sans-serif;
+    /*font-size: 70%;*/
+    /*font-weight: 900;*/
+    /*margin-top: 2px;*/
+}
+
+.main-char-stats-highlight {
+    font-size: 100%;
+    color: dimgray;
+}
+
+.navbar {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.panel-default {
+    margin-bottom: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.panel-body-no-padding {
+    padding: 0px;
+}
+
+.thumbnail-top-margin {
+    margin-top: 25px;
+}
+
+.mastfoot-inner {
+    background-color: #1c1e22;
+    border: 5px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.bg_video{
+	position: fixed;
+	/*right: 0;*/
+    left: 0;
+	bottom: 0;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	z-index: -1000;
+	background-size: cover;
+}
+
+.bg_img{
+	position: fixed;
+	/*right: 0;*/
+    left: 0;
+	bottom: 0;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	z-index: -1000;
+	background-size: cover;
+}
+
+.jumbotron-cover {
+    border-radius: 15px;
+}
