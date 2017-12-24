@@ -1,4 +1,6 @@
 body {
+    background: linear-gradient(to bottom, #757677 100px, #fff 100px);
+    min-height: 100vh;
     min-width:550px; /* suppose you want minimun width of 1000px */
     width: auto !important;  /* Firefox will set width as auto */
     width:550px;             /* As IE ignores !important it will set width as 1000px; */
@@ -28,7 +30,15 @@ spam.custom-banner {
 .navbar {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-bottom: 0px;
 }
+
+.container .jumbotron {
+border-radius: 0px;
+}
+
 
 .panel-default {
     margin-bottom: 0px;
