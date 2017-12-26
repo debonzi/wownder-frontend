@@ -1,0 +1,4 @@
+Testar wow Login
+ -> Criar uma API qualquer
+ -> Logar usando a app flask
+ -> Tentar usar a API a partir do app.
