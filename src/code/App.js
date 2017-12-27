@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
 
 import { Grid, Navbar, Nav, NavItem, Jumbotron } from 'react-bootstrap';
 
@@ -17,6 +18,7 @@ class ContentManager extends Component {
     else if (this.props.state.screen === 'Login'){
       return <Login login_url={this.props.state.url} />
     }
+    return ""
   }
 }
 
@@ -49,10 +51,14 @@ class ErrorBoundary extends Component {
   }
 }
 
+
 class App extends Component {
   constructor(props) {
     super(props)
     this.showProfile = this.showProfile.bind(this)
+    this.logout = this.logout.bind(this);
+    this.WNavBar = this.WNavBar.bind(this);
+
     this.state = {
       screen: 'Login'
     }
@@ -72,6 +78,38 @@ class App extends Component {
     })
   }
 
+  logout() {
+    let endpoint = process.env.REACT_APP_API_URI + '/api/logout'
+    fetch(endpoint, {credentials: 'include'})
+    .then(results => {
+      return results.json();
+    }).then(data => {
+      console.log("Logout", data);
+      window.location.reload()
+    })
+  }
+
+  WNavBar() {
+    if (this.state.screen === "Login") {
+      return ""
+      // (
+      // <Nav pullRight>
+      //   <NavItem eventKey={1} href={this.state.url}>Login</NavItem>
+      // </Nav>
+
+      // )
+    }
+    return (
+      <div>
+      <Nav>
+        <NavItem eventKey={1} href="#" onClick={() => this.setState({screen: 'CharsBlock'})}>Chars</NavItem>
+      </Nav>
+      <Nav pullRight>
+        <NavItem eventKey={2} href="#" onClick={this.logout}>Logout</NavItem>
+      </Nav>
+      </div>
+    )
+  }
 
   showProfile(uuid) {
     this.setState({screen: 'CharProfile', uuid: uuid});
@@ -80,26 +118,25 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Grid>
         <Navbar inverse collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-            Wownder
+              Wownder
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            <Nav>
-              <NavItem eventKey={1} href="#" onClick={() => this.setState({screen: 'CharsBlock'})}>Chars</NavItem>
-            </Nav>
-          </Navbar.Collapse>          
+          <this.WNavBar />
+          </Navbar.Collapse>
         </Navbar>
+        <Grid>
         <Jumbotron>
         <ErrorBoundary>
             <ContentManager state={this.state} profile={this.showProfile}/>
         </ErrorBoundary>
         </Jumbotron>
-          </Grid>
+        </Grid>
+      <ToastContainer autoClose={2000}/>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import {CharPortrait, RoleForm, ListedForm} from './basicComponents'
+import {CharPortrait, RoleForm, ListedForm, Find2s, Find3s, Results} from './basicComponents'
 
 
 class CharsBlock extends Component {
@@ -48,7 +48,10 @@ class CharsBlock extends Component {
 class CharProfileBlock extends Component {
   constructor(props){
     super(props);
-    this.state = {char: {}, 'profile': {}}
+    this.state = {char: {}, profile: {}, results: []}
+
+    this.handleProfileChange = this.handleProfileChange.bind(this);
+    this.handleResultsUpdated = this.handleResultsUpdated.bind(this);
   }
 
   componentDidMount() {
@@ -72,6 +75,16 @@ class CharProfileBlock extends Component {
     })
   }
 
+  handleProfileChange(key, value) {
+    let _p = this.state.profile
+    _p[key] = value;
+    this.setState({profile: _p});
+  }
+
+  handleResultsUpdated(results){
+    console.log("Updated Main", results)
+    this.setState({results: results})
+  }
 
   render() {
     return(
@@ -99,9 +112,20 @@ class CharProfileBlock extends Component {
           <RoleForm profile={this.state.profile}/>
         </div>
         <div className="col-xs-6 col-md-6">
-          <ListedForm profile={this.state.profile}/>
+          <ListedForm profile={this.state.profile} profileHandler={this.handleProfileChange}/>
         </div>
+
+        <div className="col-xs-6 col-md-6">
+          <Find2s profile={this.state.profile} resultsUpdated={this.handleResultsUpdated}/>
+        </div>
+        <div className="col-xs-6 col-md-6">
+          <Find3s profile={this.state.profile} resultsUpdated={this.handleResultsUpdated}/>
+        </div>
+
+
+
       </div>
+    <Results results={this.state.results} />
     </div>
   )}
 }
@@ -110,7 +134,10 @@ class Login extends Component {
   render(){
     return(
     <div>
-      <a href={this.props.login_url}> Login </a>
+      <a className="btn" href={this.props.login_url}>
+        <img alt="Brand" src={process.env.REACT_APP_API_URI + "/static/css-imgs/wow-nav-logo.png"} width="300px" />
+        <h3>Login</h3>
+      </a>
     </div>
   )}
 }
