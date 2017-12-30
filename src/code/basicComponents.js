@@ -1,6 +1,38 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 
+import Modal from 'react-modal';
+
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)',
+    color                 : 'black',
+  },
+  overlay: {
+    backgroundColor: 'black',
+    opacity: 0.5
+  }
+};
+
+class LoktarLoading extends React.Component {
+
+  render() {
+    return (
+    <Modal
+      isOpen={this.props.isLoading}
+      style={customStyles}
+    >
+      <h1>Lok'tar Ogar!!!</h1>
+      <p>Loading....</p>
+    </Modal>
+  )}
+}
 
 class CharPortrait extends React.Component {
   handleClick = () => {
@@ -159,6 +191,7 @@ class Find2s extends React.Component {
     if (!this.props.profile.listed_2s) {
       return;
     }
+    this.props.setLoadingStatus(true);
     console.log("Find 2s");
     let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + this.props.profile.char_uuid + '/profile/matches?arena=2s'
     fetch(endpoint, {credentials: 'include'})
@@ -170,6 +203,7 @@ class Find2s extends React.Component {
       }
       this.setState({results: data})
       this.props.resultsUpdated(data)
+      this.props.setLoadingStatus(false);
       console.log("Find2s", data);
     })
   }
@@ -197,6 +231,7 @@ class Find3s extends React.Component {
     if (!this.props.profile.listed_3s) {
       return;
     }
+    this.props.setLoadingStatus(true);
     console.log("Find 3s");
     let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + this.props.profile.char_uuid + '/profile/matches?arena=3s'
     fetch(endpoint, {credentials: 'include'})
@@ -207,7 +242,8 @@ class Find3s extends React.Component {
         toast.info("Wow!! No matches found.");
       }
       this.setState({results: data})
-      this.props.resultsUpdated(data)
+      this.props.resultsUpdated(data);
+      this.props.setLoadingStatus(false);
       console.log("Find3s", data);
     })
   }
@@ -273,6 +309,6 @@ class Results extends React.Component {
     }
 }
 
-export {CharPortrait, RoleForm, ListedForm, Find2s, Find3s, Results}
+export {LoktarLoading, CharPortrait, RoleForm, ListedForm, Find2s, Find3s, Results}
 
 

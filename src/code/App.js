@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import { Grid, Navbar, Nav, NavItem, Jumbotron } from 'react-bootstrap';
+import { Grid, Navbar, Nav, NavItem, MenuItem, Jumbotron } from 'react-bootstrap';
 
-import { CharsBlock, CharProfileBlock, Login } from './contentBlocks'
-
+import { CharsBlock, CharProfileBlock, Login } from './contentBlocks';
+import {LoktarLoading} from './basicComponents';
 
 class ContentManager extends Component {
   render() {
     console.log('state', this.props.state)
     if (this.props.state.screen === 'CharsBlock'){
-      return <CharsBlock  profile={this.props.profile} />
+      return <CharsBlock profile={this.props.profile} />
     }
     else if (this.props.state.screen === 'CharProfile'){
-      return <CharProfileBlock uuid={this.props.state.uuid} />
+      return <CharProfileBlock  uuid={this.props.state.uuid} />
     }
     else if (this.props.state.screen === 'Login'){
       return <Login login_url={this.props.state.url} />
@@ -60,7 +60,8 @@ class App extends Component {
     this.WNavBar = this.WNavBar.bind(this);
 
     this.state = {
-      screen: 'Login'
+      screen: 'Login',
+      isLoading: true
     }
   }
 
@@ -75,6 +76,7 @@ class App extends Component {
     }).then((data) => {
       console.log("Data", data)
     this.setState(data);
+    this.setState({isLoading: false})
     })
   }
 
@@ -91,13 +93,12 @@ class App extends Component {
 
   WNavBar() {
     if (this.state.screen === "Login") {
-      return ""
-      // (
-      // <Nav pullRight>
-      //   <NavItem eventKey={1} href={this.state.url}>Login</NavItem>
-      // </Nav>
+      return (
+      <Nav pullRight>
+        <MenuItem eventKey={1} href={this.state.url}>Login</MenuItem>
+      </Nav>
 
-      // )
+      )
     }
     return (
       <div>
@@ -116,8 +117,11 @@ class App extends Component {
   }
 
   render() {
+    console.log("Screen", this.state.screen, "Loading", this.state.isLoading);
+
     return (
       <div>
+        <LoktarLoading isLoading={this.state.isLoading} />
         <Navbar inverse collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
@@ -132,7 +136,7 @@ class App extends Component {
         <Grid>
         <Jumbotron>
         <ErrorBoundary>
-            <ContentManager state={this.state} profile={this.showProfile}/>
+          <ContentManager state={this.state} profile={this.showProfile}/>
         </ErrorBoundary>
         </Jumbotron>
         </Grid>

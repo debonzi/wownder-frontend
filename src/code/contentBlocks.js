@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 
-import {CharPortrait, RoleForm, ListedForm, Find2s, Find3s, Results} from './basicComponents'
+import {LoktarLoading, CharPortrait, RoleForm, ListedForm, Find2s, Find3s, Results} from './basicComponents'
 
 
 class CharsBlock extends Component {
   constructor(props){
     super(props);
-    this.state = {chars: []}
+    this.state = {chars: [], isLoading: false}
   }
 
   componentDidMount() {
+    this.setState({isLoading: true});
     let endpoint = process.env.REACT_APP_API_URI + '/api/chars'
     fetch(endpoint, {credentials: 'include'})
     .then(results => {
@@ -32,12 +33,14 @@ class CharsBlock extends Component {
         )
       })
     this.setState({chars: chars});
+    this.setState({isLoading: false});
     })
   }
 
   render() {
     return (
     <div className="row">
+    <LoktarLoading isLoading={this.state.isLoading} />
     {this.state.chars}
     </div>
     )
@@ -48,19 +51,22 @@ class CharsBlock extends Component {
 class CharProfileBlock extends Component {
   constructor(props){
     super(props);
-    this.state = {char: {}, profile: {}, results: []}
+    this.state = {char: {}, profile: {}, results: [], isLoading: false, fetchedChar:false, fetchedProfile: false}
 
     this.handleProfileChange = this.handleProfileChange.bind(this);
     this.handleResultsUpdated = this.handleResultsUpdated.bind(this);
+    this.setLoadingStatus = this.setLoadingStatus.bind(this);
   }
 
   componentDidMount() {
+    this.setState({isLoading: true});
     let c_endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + this.props.uuid
     fetch(c_endpoint, {credentials: 'include'})
     .then(results => {
       return results.json();
     }).then(data => {
-      this.setState({char: data});
+      console.log("on Fetch Char => Fetched Profile", this.state.fetchedProfile)
+      this.setState({char: data, fetchedChar: true, isLoading: !(this.state.fetchedProfile)});
     })
 
     let p_endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + this.props.uuid + '/profile'
@@ -71,7 +77,8 @@ class CharProfileBlock extends Component {
       }
       return results.json();
     }).then(data => {
-      this.setState({profile: data});
+      console.log("on Fetch Char => Fetched Profile", this.state.fetchedChar)
+      this.setState({profile: data, fetchedProfile: true, isLoading: !(this.state.fetchedChar)});
     })
   }
 
@@ -84,6 +91,11 @@ class CharProfileBlock extends Component {
   handleResultsUpdated(results){
     console.log("Updated Main", results)
     this.setState({results: results})
+  }
+
+  setLoadingStatus(state) {
+    console.log("setLoadingStatus", state)
+    this.setState({isLoading: state})
   }
 
   render() {
@@ -116,16 +128,14 @@ class CharProfileBlock extends Component {
         </div>
 
         <div className="col-xs-6 col-md-6">
-          <Find2s profile={this.state.profile} resultsUpdated={this.handleResultsUpdated}/>
+          <Find2s setLoadingStatus={this.setLoadingStatus} profile={this.state.profile} resultsUpdated={this.handleResultsUpdated}/>
         </div>
         <div className="col-xs-6 col-md-6">
-          <Find3s profile={this.state.profile} resultsUpdated={this.handleResultsUpdated}/>
+          <Find3s setLoadingStatus={this.setLoadingStatus} profile={this.state.profile} resultsUpdated={this.handleResultsUpdated}/>
         </div>
-
-
-
       </div>
     <Results results={this.state.results} />
+    <LoktarLoading isLoading={this.state.isLoading} />
     </div>
   )}
 }
@@ -134,10 +144,7 @@ class Login extends Component {
   render(){
     return(
     <div>
-      <a className="btn" href={this.props.login_url}>
-        <img alt="Brand" src={process.env.REACT_APP_API_URI + "/static/css-imgs/wow-nav-logo.png"} width="300px" />
-        <h3>Login</h3>
-      </a>
+      <img alt="Brand" src={process.env.REACT_APP_API_URI + "/static/css-imgs/wow-nav-logo.png"} width="300px" />
     </div>
   )}
 }
