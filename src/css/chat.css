@@ -1,0 +1,114 @@
+[class^="col-md-"].chat-side-bar {
+  min-height: 600px;
+  max-height: 600px;
+  background-color: #8c8c8c;
+  overflow-y: scroll;
+  }
+
+[class^="col-md-"].chat-side-bar-header {
+  min-height: 80px;
+  max-height: 80px;
+  background-color: #8c8c8c;
+  border-color: #000000;
+  border-bottom: solid 1px #a3a3a3;
+  border-right: solid 1px #a3a3a3;
+
+  }
+
+
+[class^="col-md-"].chat-area {
+  min-height: 566px;
+  max-height: 566px;
+  background-color: #969696;
+  overflow-y: scroll;
+  padding-top: 10px;
+  }
+
+[class^="col-md-"].chat-area-header {
+  min-height: 80px;
+  max-height: 80px;
+  background-color: #969696;
+  border-bottom: solid 1px #a3a3a3;
+  }
+
+[class^="col-md-"].chat-side-bar-item {
+  min-height: 80px;
+  background-color: #8c8c8c;
+  border-bottom: inset 1px #a3a3a3;
+/*    border-style: solid;
+  border-width: 1px 1px 0px 1px;
+*/  }
+
+[class^="col-md-"].chat-input-msg {
+  border-radius: 0;
+  margin: 0;
+}
+
+[class^="col-md-"].chat-msg {
+  padding: 0;
+}
+
+.chat-side-bar-item:hover {
+  background-color: #777777;
+}
+
+.chat-side-bar-img {
+  padding: 15px 0px 0px 0px;
+  float: left;
+}
+
+.chat-char-name {
+   padding-top: 16px;
+   margin-left: 70px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.chat-char-name-top-area {
+   padding-top: 27px;
+   margin-left: 70px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.chat-char-class-top-area {
+  font-size: 15px;
+  font-weight: normal;
+  font-style: italic
+ }
+
+.chat-char-server {
+   /*padding-top: 25px;*/
+   margin-left: 70px;
+   font-style: italic;
+}
+
+[class^="col-md-"].bubble-chat {
+  margin-bottom: 20px;
+}
+
+[class^="col-md-"].bubble-pic-right {
+  padding-left: 0px
+}
+
+.badge.badge-info {
+  background-color: #5f3bba;
+  font-style: italic;
+
+}
+
+::-webkit-scrollbar
+{
+  width: 5px;  /* for vertical scrollbars */
+  height: 5px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(0, 0, 0, 0.3);
+}

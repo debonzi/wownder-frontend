@@ -1,4 +1,65 @@
-Testar wow Login
- -> Criar uma API qualquer
- -> Logar usando a app flask
- -> Tentar usar a API a partir do app.
+.chat-side-bar {
+    min-height: 600px;
+    max-height: 600px;
+    background-color: #8c8c8c;
+    overflow-y: scroll;
+  }
+
+  .chat-area {
+    min-height: 600px;
+    max-height: 600px;
+    background-color: #969696;
+    overflow-y: scroll;
+    padding-top: 10px;
+  }
+
+  .chat-side-bar-item {
+    min-height: 80px;
+    background-color: #8c8c8c;
+    border-color: #000000;
+    border-bottom: inset 1px;
+/*    border-style: solid;
+    border-width: 1px 1px 0px 1px;
+*/  }
+  .chat-side-bar-item:hover {
+    background-color: #777777;
+  }
+
+  .chat-char-name {
+     padding-top: 16px;
+     margin-left: 70px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .chat-char-server {
+     /*padding-top: 25px;*/
+     margin-left: 70px;
+     font-style: italic;
+  }
+
+  .bubble-right {
+    padding-left: 0px
+  }
+
+  .badge-info {
+    background-color: #5f3bba;
+    font-style: italic;
+
+  }
+
+  ::-webkit-scrollbar
+  {
+    width: 5px;  /* for vertical scrollbars */
+    height: 5px; /* for horizontal scrollbars */
+  }
+
+  ::-webkit-scrollbar-track
+  {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  ::-webkit-scrollbar-thumb
+  {
+    background: rgba(0, 0, 0, 0.3);
+  }

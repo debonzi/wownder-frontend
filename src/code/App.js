@@ -5,49 +5,22 @@ import { Grid, Navbar, Nav, NavItem, MenuItem, Jumbotron } from 'react-bootstrap
 
 import { CharsBlock, CharProfileBlock, Login } from './contentBlocks';
 import {LoktarLoading} from './basicComponents';
+import ChatWindow from "./chatWindow";
+
 
 class ContentManager extends Component {
+  constructor(props) {
+    super(props)
+    this.contentMapper = {
+      Login: () => {return <Login login_url={this.props.state.url} />},
+      CharsBlock: () => {return <CharsBlock profile={this.props.profile} />},
+      CharProfile: () => {return <CharProfileBlock  uuid={this.props.state.uuid} />},
+      ChatWindow: () => {return <ChatWindow />}
+    }
+  }
   render() {
     console.log('state', this.props.state)
-    if (this.props.state.screen === 'CharsBlock'){
-      return <CharsBlock profile={this.props.profile} />
-    }
-    else if (this.props.state.screen === 'CharProfile'){
-      return <CharProfileBlock  uuid={this.props.state.uuid} />
-    }
-    else if (this.props.state.screen === 'Login'){
-      return <Login login_url={this.props.state.url} />
-    }
-    return ""
-  }
-}
-
-
-class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  // componentDidCatch(error, info) {
-  //   // Display fallback UI
-  //   this.setState({ hasError: true });
-  //   // You can also log the error to an error reporting service
-  //   logErrorToMyService(error, info);
-  // }
-  componentDidCatch(error, info) {
-    // Display fallback UI
-    this.setState({ hasError: true });
-    // You can also log the error to an error reporting service
-    console.log(error, info);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>;
-    }
-    return this.props.children;
+    return this.contentMapper[this.props.state.screen]()
   }
 }
 
@@ -87,6 +60,7 @@ class App extends Component {
       return results.json();
     }).then(data => {
       console.log("Logout", data);
+      // window.location.assign("https://www.w3schools.com")
       window.location.reload()
     })
   }
@@ -104,6 +78,9 @@ class App extends Component {
       <div>
       <Nav>
         <NavItem eventKey={1} href="#" onClick={() => this.setState({screen: 'CharsBlock'})}>Chars</NavItem>
+      </Nav>
+      <Nav>
+        <NavItem eventKey={2} href="#" onClick={() => this.setState({screen: 'ChatWindow'})}>Messanges</NavItem>
       </Nav>
       <Nav pullRight>
         <NavItem eventKey={2} href="#" onClick={this.logout}>Logout</NavItem>
@@ -133,13 +110,11 @@ class App extends Component {
           <this.WNavBar />
           </Navbar.Collapse>
         </Navbar>
-        <Grid>
         <Jumbotron>
-        <ErrorBoundary>
+        <Grid>
           <ContentManager state={this.state} profile={this.showProfile}/>
-        </ErrorBoundary>
-        </Jumbotron>
         </Grid>
+        </Jumbotron>
       <ToastContainer autoClose={2000}/>
       </div>
     );
