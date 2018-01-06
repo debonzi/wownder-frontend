@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import { Grid, Navbar, Nav, NavItem, MenuItem, Jumbotron } from 'react-bootstrap';
+import { Grid, Navbar, Nav, NavItem } from 'react-bootstrap';
 
 import { CharsBlock, CharProfileBlock, Login } from './contentBlocks';
 import {LoktarLoading} from './basicComponents';
@@ -29,8 +29,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.showProfile = this.showProfile.bind(this)
-    this.logout = this.logout.bind(this);
-    this.WNavBar = this.WNavBar.bind(this);
+    this.logout = this.logout.bind(this)
+    this.WNavBar = this.WNavBar.bind(this)
 
     this.state = {
       screen: 'Login',
@@ -69,7 +69,7 @@ class App extends Component {
     if (this.state.screen === "Login") {
       return (
       <Nav pullRight>
-        <MenuItem eventKey={1} href={this.state.url}>Login</MenuItem>
+        <NavItem eventKey={1} onClick={() => window.location.assign(this.state.url)}>Login</NavItem>
       </Nav>
 
       )
@@ -77,13 +77,13 @@ class App extends Component {
     return (
       <div>
       <Nav>
-        <NavItem eventKey={1} href="#" onClick={() => this.setState({screen: 'CharsBlock'})}>Chars</NavItem>
+        <NavItem eventKey={1} onClick={() => this.setState({screen: 'CharsBlock'})}>Chars</NavItem>
       </Nav>
       <Nav>
-        <NavItem eventKey={2} href="#" onClick={() => this.setState({screen: 'ChatWindow'})}>Messanges</NavItem>
+        <NavItem eventKey={2} onClick={() => this.setState({screen: 'ChatWindow'})}>Chat</NavItem>
       </Nav>
       <Nav pullRight>
-        <NavItem eventKey={2} href="#" onClick={this.logout}>Logout</NavItem>
+        <NavItem eventKey={2} onClick={this.logout}>Logout</NavItem>
       </Nav>
       </div>
     )
@@ -111,9 +111,7 @@ class App extends Component {
           </Navbar.Collapse>
         </Navbar>
         <Grid>
-        <Jumbotron>
           <ContentManager state={this.state} profile={this.showProfile}/>
-        </Jumbotron>
         </Grid>
       <ToastContainer autoClose={2000}/>
       </div>

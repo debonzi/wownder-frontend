@@ -1,3 +1,7 @@
+.chat-container {
+  margin-top: 20px;
+}
+
 [class^="col-md-"].chat-side-bar {
   min-height: 600px;
   max-height: 600px;
@@ -14,7 +18,6 @@
   border-right: solid 1px #a3a3a3;
 
   }
-
 
 [class^="col-md-"].chat-area {
   min-height: 566px;

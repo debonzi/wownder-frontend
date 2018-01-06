@@ -27,6 +27,7 @@ class LoktarLoading extends React.Component {
     <Modal
       isOpen={this.props.isLoading}
       style={customStyles}
+      ariaHideApp={false}
     >
       <h1>Lok'tar Ogar!!!</h1>
       <p>Loading....</p>
@@ -43,8 +44,8 @@ class CharPortrait extends React.Component {
   {
     return (
       <div role="button" onClick={this.handleClick} uuid={this.props.uuid} className="col-xs-6 col-sm-4 col-md-3">
-        <div className="thumbnail">
-          <img src={this.props.inset} alt="" />
+        <div className="thumbnail thumbnail-top-margin">
+          <img className="thumbnail-top-margin" src={this.props.inset} alt="" />
           <div className="caption">
             <h3>{this.props.name} </h3>
             <h5>({this.props.level} {this.props.class}, {this.props.realm})</h5>

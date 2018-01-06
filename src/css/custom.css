@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(to bottom, #757677 100px, #fff 100px);
+    /*background: linear-gradient(to bottom, #757677 100px, #fff 100px);*/
     min-height: 100vh;
     min-width:550px; /* suppose you want minimun width of 1000px */
     width: auto !important;  /* Firefox will set width as auto */
@@ -52,6 +52,7 @@ border-radius: 0px;
 
 .thumbnail-top-margin {
     margin-top: 25px;
+    margin-bottom: 0px;
 }
 
 .mastfoot-inner {
