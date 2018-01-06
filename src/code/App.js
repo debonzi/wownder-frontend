@@ -110,11 +110,11 @@ class App extends Component {
           <this.WNavBar />
           </Navbar.Collapse>
         </Navbar>
-        <Jumbotron>
         <Grid>
+        <Jumbotron>
           <ContentManager state={this.state} profile={this.showProfile}/>
-        </Grid>
         </Jumbotron>
+        </Grid>
       <ToastContainer autoClose={2000}/>
       </div>
     );
