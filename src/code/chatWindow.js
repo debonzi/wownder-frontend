@@ -4,7 +4,7 @@ import '../css/chat.css'
 
 class ChatRoom extends React.Component {
   handleClick = () => {
-    this.props.roomSwitch(this.props.room.id);
+    this.props.roomSwitch(this.props.room);
   }
 
   render() {
@@ -27,11 +27,41 @@ class ChatRoom extends React.Component {
 }
 
 
-class ChatOwner extends React.Component {
+class ChatOwnerChooserItem extends React.Component {
+	handleClick = () => {
+	    this.props.charSwitch(this.props.char);
+	}
 
 	render() {
 		return(
-		  <div className="col-md-3 chat-side-bar-header">
+		    <div role="button" onClick={this.handleClick} className="row">
+		      <div className="col-md-12 chat-side-bar-item">
+		        <div className="chat-side-bar-img">
+		          <img width="50px" src={this.props.char.thumbnail_url} alt={this.props.char.name} className="img-circle" />
+		        </div>
+		        <div className="chat-char-name">
+		          {this.props.char.name}
+		        </div>
+		        <div className="chat-char-server">
+		          {this.props.char.realm}
+		        </div>
+		      </div>
+		    </div>
+		)
+	}
+}
+
+
+class ChatOwner extends React.Component {
+	chooser = () => {
+		return this.props.chars.map((char) => {
+			return <ChatOwnerChooserItem char={char} charSwitch={this.props.charSwitch} />
+		})
+	}
+
+	render() {
+		return(
+		  <div className="col-md-3 chat-side-bar-header chat-dropdown">
 		    <div className="row">
 		      <div className="col-md-12 chat-side-bar-item">
 		        <div className="chat-side-bar-img">
@@ -44,6 +74,9 @@ class ChatOwner extends React.Component {
 		          {this.props.owner.realm}
 		        </div>
 		      </div>
+		    </div>
+		    <div className="chat-dropdown-content">
+				{this.chooser()}
 		    </div>
 		  </div>
 		)
@@ -207,12 +240,14 @@ class ChatWindow extends React.Component {
 		super(props)
 		this.state = {
 			owner: {},
+			chars: [],
 			rooms: [],
 			active_room: {},
 			conversation: []
 		}
 		this.sendMessage = this.sendMessage.bind(this)
 		this.switchChatRoom  = this.switchChatRoom.bind(this)
+		this.switchChar = this.switchChar.bind(this)
 	}
 
 	fetchAndSetOwner = () => {
@@ -223,61 +258,80 @@ class ChatWindow extends React.Component {
 	    })
 	    .then(data => {
 	      this.setState({owner: data})
+	      this.fetchAndSetRooms(data.uuid)
 	    })
 	}
 
-	fetchAndSetRooms = () => {
-		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/b76d65da1057460dbb308087123e92ab/chat/rooms'
+	fetchAndSetRooms = (char_uuid) => {
+		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + char_uuid + '/chat/rooms'
 	    fetch(endpoint, {credentials: 'include'})
 	    .then(results => {
 	      return results.json()
 	    })
-	    .then(data => {
-	    	let rooms = data.map((room) => {
+		.then(_rooms => {
+			let rooms = _rooms.map((room) => {
 		      	return <ChatRoom roomSwitch={this.switchChatRoom} key={room.id} room={room} />
 	    	})
 	        this.setState({rooms})
-	        if (data.length > 0) {
-	        	this.switchChatRoom(data[0].id)
+	        if (_rooms.length > 0) {
+				this.switchChatRoom(_rooms[0])
 	        }
 	    })
 	}
 
+	switchChatRoom(room) {
+		this.fetchAndSetActiveRoom(room)
+	}
 
-	updateRooms = () => {
-		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/b76d65da1057460dbb308087123e92ab/chat/rooms'
+
+	fetchAndSetActiveRoom = (room) => {
+		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + room.uuid + '/chat/rooms/' + room.id
 	    fetch(endpoint, {credentials: 'include'})
 	    .then(results => {
 	      return results.json()
 	    })
 	    .then(data => {
-	    	let rooms = data.map((room) => {
-		      	return <ChatRoom roomSwitch={this.switchChatRoom} key={room.id} room={room} />
+			this.setState({
+				active_room: room,
+				conversation: data.conversation
+	    	})
+	    })
+	}
+
+	fetchAndSetUserChars = () => {
+		let endpoint = process.env.REACT_APP_API_URI + '/api/chars'
+	    fetch(endpoint, {credentials: 'include'})
+	    .then(results => {
+	      return results.json()
+	    })
+	    .then(chars => {
+			this.setState({chars})
+	    })
+	}
+
+	updateRooms = (owner) => {
+		if (!owner.uuid) {
+			return
+		}
+		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + owner.uuid + '/chat/rooms'
+	    fetch(endpoint, {credentials: 'include'})
+	    .then(results => {
+	      return results.json()
+	    })
+	    .then(data => {
+			let rooms = data.map((room) => {
+				return <ChatRoom roomSwitch={this.switchChatRoom} key={room.id} room={room} />
 	    	})
 	        this.setState({rooms})
 	    })
 	}
 
-	fetchAndSetActiveRoom = (room_id) => {
-		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/b76d65da1057460dbb308087123e92ab/chat/rooms/' + room_id
-	    fetch(endpoint, {credentials: 'include'})
-	    .then(results => {
-	      return results.json()
-	    })
-	    .then(data => {
-	    	this.setState({
-	    		active_room: data.active_room,
-	    		conversation: data.conversation
-	    	})
-	    })
-
-	}
 
 	componentDidMount() {
 		this.fetchAndSetOwner()
-		this.fetchAndSetRooms()
+		this.fetchAndSetUserChars()
 		this.timerID = setInterval(
-	      () => this.updateRooms(),
+	      () => this.updateRooms(this.state.owner),
 	      5000
 	    );
 	}
@@ -285,11 +339,6 @@ class ChatWindow extends React.Component {
 	componentWillUnmount() {
 	   	clearInterval(this.timerID);
   	}
-
-	switchChatRoom(room_id) {
-		this.fetchAndSetActiveRoom(room_id)
-	}
-
 
 	sendMessage(message) {
 		var _conversation = this.state.conversation.slice();    
@@ -302,12 +351,16 @@ class ChatWindow extends React.Component {
 	    this.setState({conversation: _conversation})
 	}
 
+	switchChar(owner) {
+		this.setState({owner, rooms: [], conversation: [], active_room: {}})
+		this.updateRooms(owner)
+	}
 
 	render() {
 	  return(
 		<div className="chat-container">
 			<div className="row">
-				<ChatOwner owner={this.state.owner }/>
+				<ChatOwner owner={this.state.owner } chars={this.state.chars} charSwitch={this.switchChar} />
 			    <ChatHeader room={this.state.active_room}/>
 			</div>
 		<div className="row">

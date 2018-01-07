@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import {LoktarLoading, CharPortrait, RoleForm, ListedForm, Find2s, Find3s, Results} from './basicComponents'
+import { Jumbotron } from 'react-bootstrap';
 
 
 class CharsBlock extends Component {
@@ -145,7 +146,9 @@ class Login extends Component {
   render(){
     return(
     <div>
-      <img alt="Brand" src={process.env.REACT_APP_API_URI + "/static/css-imgs/wow-nav-logo.png"} width="300px" />
+    <Jumbotron>
+      <img src={require('../media/landing_battle.jpg')} style={{ display: "block", margin:"0 auto" }} alt="Logo"/>
+    </Jumbotron>
     </div>
   )}
 }
