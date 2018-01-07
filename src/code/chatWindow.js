@@ -7,18 +7,27 @@ class ChatRoom extends React.Component {
     this.props.roomSwitch(this.props.room);
   }
 
+  news_badge = () => {
+	if (this.props.room.news) {
+		return <span className="badge badge-info">{this.props.room.news}</span>
+		}
+	else {
+		return ''
+		}
+	}
+
   render() {
 	return(
 	<div role="button" onClick={this.handleClick} className="row">
       <div className="col-md-12 chat-side-bar-item">
         <div className="chat-side-bar-img">
-          <img width="50px" src={this.props.room.thumbnail_url} alt={this.props.room.name} className="img-circle" />
+          <img width="50px" src={this.props.room.recipient.thumbnail_url} alt={this.props.room.recipient.name} className="img-circle" />
         </div>
         <div className="chat-char-name">
-          {this.props.room.name} <span className="badge badge-info">{this.props.room.news}</span>
+          {this.props.room.recipient.name} {this.news_badge()}
         </div>
         <div className="chat-char-server">
-          {this.props.room.realm}
+          {this.props.room.recipient.realm}
         </div>
       </div>
     </div>
@@ -86,15 +95,21 @@ class ChatOwner extends React.Component {
 class ChatHeader extends React.Component {
 
 	render() {
+		if (!this.props.room.recipient) {
+			return (
+			  <div className="col-md-9 chat-area-header">
+			  </div>
+				)
+		}
 		return(
 		  <div className="col-md-9 chat-area-header">
 		    <div className="row">
 		      <div className="col-md-12 chat-side-bar-item">
 		        <div className="chat-side-bar-img">
-		          <img width="50px" src={this.props.room.thumbnail_url} alt={this.props.room.name} className="img-circle" />
+		          <img width="50px" src={this.props.room.recipient.thumbnail_url} alt={this.props.room.recipient.name} className="img-circle" />
 		        </div>
 		        <div className="chat-char-name-top-area">
-		          {this.props.room.name} <span className="chat-char-class-top-area"> ({this.props.room.race} {this.props.room.class}) </span>
+		          {this.props.room.recipient.name} <span className="chat-char-class-top-area"> ({this.props.room.recipient.race} {this.props.room.recipient.class}) </span>
 		        </div>
 		      </div>
 		    </div>
@@ -109,16 +124,15 @@ class MessageSent extends React.Component {
 	render() {
 		return(
 		    <div className="row">
-		      <div className="col-md-1">
-		        <img width="50px" src={this.props.sender.thumbnail_url} alt={this.props.sender.name} className="img-circle" />
-		      </div>
-
 		      <div className="col-md-11 bubble-chat" >
 		        <div className="panel panel-default">
 		          <div className="panel-body">
 					{this.props.message.message}
 		          </div>
 		        </div>
+		      </div>
+		      <div className="col-md-1">
+		        <img width="50px" src={this.props.sender.thumbnail_url} alt={this.props.sender.name} className="img-circle" />
 		      </div>
 		    </div>
 		)
@@ -130,15 +144,15 @@ class MessageReceived extends React.Component {
 	render() {
 		return(
 		    <div className="row">
+		      <div className="col-md-1 bubble-pic-right">
+		        <img width="50px" src={this.props.receiver.thumbnail_url} alt={this.props.receiver.name} className="img-circle" />
+		      </div>
 		      <div className="col-md-11 bubble-chat">
 		        <div className="panel panel-default">
 		          <div className="panel-body">
 					{this.props.message.message}
 		          </div>
 		        </div>
-		      </div>
-		      <div className="col-md-1 bubble-pic-right">
-		        <img width="50px" src={this.props.receiver.thumbnail_url} alt={this.props.receiver.name} className="img-circle" />
 		      </div>
 		    </div>
 		)
@@ -147,22 +161,28 @@ class MessageReceived extends React.Component {
 
 
 class ChatArea extends React.Component {
+	constructor(props) {
+		super(props)
+		this.read = []
+	}
 
 	buildConversation() {
+		this.read = []
 		return(
 			this.props.conversation.map((message) => {
 			if (message.type === 'sent') {
 				return <MessageSent key={message.id} sender={this.props.owner} message={message} />
 			}
-			// else if (message.type === 'received') {
-			return <MessageReceived key={message.id} receiver={this.props.room} message={message} />
-			// }
+			//received
+			if (!message.read) {
+				this.read.push(message.id)
+			}
+			return <MessageReceived key={message.id} receiver={this.props.room.recipient} message={message} />
 			})
 		)
 	}
 
 	scrollToBottom = () => {
-	  // { behavior: "smooth" }
 	  this.messagesEnd.scrollIntoView();
 	}
 
@@ -174,10 +194,30 @@ class ChatArea extends React.Component {
 	  this.scrollToBottom();
 	}
 
+	markReadMsgs = () => {
+		if (!this.read.length) {
+			return
+		}
+	    let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + this.props.owner.uuid + '/chat/rooms/' + this.props.room.id + '/messages'
+	    fetch(endpoint, {
+	      credentials: 'include',
+	      method: 'POST',
+	      headers: {
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json',
+	      },
+	      body: JSON.stringify({'ids': this.read})
+	    }).then(results => {
+	      return results.json()
+	    })
+	}
+
 	render() {
+		let conversation = this.buildConversation()
+		this.markReadMsgs()
 		return(
 			<div className="col-md-9 chat-area">
-				{this.buildConversation()}
+				{conversation}
 				<div style={{ float:"left", clear: "both" }} ref={(el) => { this.messagesEnd = el; }}></div>
 		    </div>
 		)
@@ -207,10 +247,11 @@ class  ChatInput extends React.Component {
 	  }
 
 	dispatchMessage() {
-		if (this.state.message){			
-			this.props.dispacher(this.state.message)
-			this.setState({message: ''})
+		if (!this.state.message){
+			return
 		}
+		this.props.dispacher(this.state.message, this.props.room)
+		this.setState({message: ''})
 	}
 
 	componentDidMount(){
@@ -250,8 +291,26 @@ class ChatWindow extends React.Component {
 		this.switchChar = this.switchChar.bind(this)
 	}
 
+	runUpdates = () => {
+		this.updateRooms(this.state.owner)
+		this.updateConversation(this.state.active_room)
+	}
+
+	componentDidMount() {
+		this.fetchAndSetOwner()
+		this.fetchAndSetUserChars()
+		this.timerID = setInterval(
+	      () => this.runUpdates(),
+	      5000
+	    );
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.timerID);
+	}
+
 	fetchAndSetOwner = () => {
-		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/b76d65da1057460dbb308087123e92ab'
+		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/chat-king'
 	    fetch(endpoint, {credentials: 'include'})
 	    .then(results => {
 	      return results.json()
@@ -285,7 +344,7 @@ class ChatWindow extends React.Component {
 
 
 	fetchAndSetActiveRoom = (room) => {
-		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + room.uuid + '/chat/rooms/' + room.id
+		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + room.owner_id + '/chat/rooms/' + room.id
 	    fetch(endpoint, {credentials: 'include'})
 	    .then(results => {
 	      return results.json()
@@ -294,7 +353,7 @@ class ChatWindow extends React.Component {
 			this.setState({
 				active_room: room,
 				conversation: data.conversation
-	    	})
+			})
 	    })
 	}
 
@@ -323,32 +382,44 @@ class ChatWindow extends React.Component {
 				return <ChatRoom roomSwitch={this.switchChatRoom} key={room.id} room={room} />
 	    	})
 	        this.setState({rooms})
+	        if (data.length > 0 && Object.keys(this.state.active_room).length === 0) {
+				this.switchChatRoom(data[0])
+	        }
+
+	    })
+	}
+
+	updateConversation = (room) => {
+		if (!room.owner_id) {
+			return
+		}
+		let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + room.owner_id + '/chat/rooms/' + room.id
+	    fetch(endpoint, {credentials: 'include'})
+	    .then(results => {
+	      return results.json()
+	    })
+	    .then(data => {
+			this.setState({
+				conversation: data.conversation
+			})
 	    })
 	}
 
 
-	componentDidMount() {
-		this.fetchAndSetOwner()
-		this.fetchAndSetUserChars()
-		this.timerID = setInterval(
-	      () => this.updateRooms(this.state.owner),
-	      5000
-	    );
-	}
-
-	componentWillUnmount() {
-	   	clearInterval(this.timerID);
-  	}
-
-	sendMessage(message) {
-		var _conversation = this.state.conversation.slice();    
-    	_conversation.push(
-    		{
-				id: this.state.conversation.length + 1,
-				type: 'sent',
-				message: message
-    		});   
-	    this.setState({conversation: _conversation})
+	sendMessage(message, room) {
+	    let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + this.state.owner.uuid + '/chat/rooms/' + room.id
+	    fetch(endpoint, {
+	      credentials: 'include',
+	      method: 'POST',
+	      headers: {
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json',
+	      },
+	      body: JSON.stringify({'message': message})
+	    }).then(results => {
+			this.updateConversation(room)
+			return results.json()
+	    })
 	}
 
 	switchChar(owner) {
@@ -368,7 +439,7 @@ class ChatWindow extends React.Component {
 			{this.state.rooms}
 		  </div>
 			<ChatArea owner={this.state.owner} room={this.state.active_room} conversation={this.state.conversation} />
-			<ChatInput dispacher={this.sendMessage} />
+			<ChatInput dispacher={this.sendMessage} room={this.state.active_room} />
 		</div>
 
 		</div>
