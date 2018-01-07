@@ -262,6 +262,28 @@ class Find3s extends React.Component {
 
 
 class ResultWidget extends React.Component {
+  createChatRoom = () => {
+    console.log('Create Chat', this.props.char.uuid)
+    let endpoint = process.env.REACT_APP_API_URI + '/api/chars/' + this.props.seeker.uuid + '/chat/rooms'
+    fetch(endpoint, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({'recipient_uuid': this.props.char.uuid})
+    }).then(results => {
+      if (results.status === 201){
+        toast.info("Chat Room Created");
+        toast.info("Access Using Chat Room on Navigation Bar");
+      }
+    }
+
+    )
+
+  }
+
   render() {
     return(
     <div className="panel panel-default">
@@ -289,6 +311,9 @@ class ResultWidget extends React.Component {
               <div className="col-xs-6 col-md-6">
                 In Game Chat Command: <span className="main-char-stats-highlight"> <pre>/t {this.props.char.name}-{this.props.char.realm}</pre> </span>
               </div>
+              <div className="col-xs-6 col-md-6">
+                <button type="button" onClick={this.createChatRoom} className="btn btn-primary">Create Chat</button>
+              </div>
             </div>
           </div>
         </div>
@@ -300,10 +325,11 @@ class ResultWidget extends React.Component {
 
 class Results extends React.Component {
   render() {
-    console.log("Resuts render", this.props.results);
+    console.log("Resutts render", this.props.results);
+    console.log("REsult render Seeker", this.props.seeker)
     let _results = this.props.results.map((res) => {
       return(
-        <ResultWidget key={res.uuid} char={res} />
+        <ResultWidget key={res.uuid} seeker={this.props.seeker} char={res} />
         )
       })
     return _results

@@ -99,6 +99,7 @@ class CharProfileBlock extends Component {
   }
 
   render() {
+    console.log('Prof Block', this.state.char)
     return(
     <div className="panel panel-default">
       <div className="panel-body">
@@ -134,7 +135,7 @@ class CharProfileBlock extends Component {
           <Find3s setLoadingStatus={this.setLoadingStatus} profile={this.state.profile} resultsUpdated={this.handleResultsUpdated}/>
         </div>
       </div>
-    <Results results={this.state.results} />
+    <Results seeker={this.state.char} results={this.state.results} />
     <LoktarLoading isLoading={this.state.isLoading} />
     </div>
   )}

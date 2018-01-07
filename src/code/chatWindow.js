@@ -237,7 +237,7 @@ class ChatWindow extends React.Component {
 		      	return <ChatRoom roomSwitch={this.switchChatRoom} key={room.id} room={room} />
 	    	})
 	        this.setState({rooms})
-	        if (data) {
+	        if (data.length > 0) {
 	        	this.switchChatRoom(data[0].id)
 	        }
 	    })
