@@ -6,6 +6,7 @@ import { Grid, Navbar, Nav, NavItem } from 'react-bootstrap';
 import { CharsBlock, CharProfileBlock, Login } from './contentBlocks';
 import {LoktarLoading} from './basicComponents';
 import ChatWindow from "./chatWindow";
+import About from "./about";
 
 
 class ContentManager extends Component {
@@ -15,7 +16,8 @@ class ContentManager extends Component {
       Login: () => {return <Login login_url={this.props.state.url} />},
       CharsBlock: () => {return <CharsBlock profile={this.props.profile} />},
       CharProfile: () => {return <CharProfileBlock  uuid={this.props.state.uuid} />},
-      ChatWindow: () => {return <ChatWindow />}
+      ChatWindow: () => {return <ChatWindow />},
+      About: () => {return <About />}
     }
   }
   render() {
@@ -80,10 +82,12 @@ class App extends Component {
         <NavItem eventKey={1} onClick={() => this.setState({screen: 'CharsBlock'})}>Chars</NavItem>
       </Nav>
       <Nav>
-        <NavItem eventKey={2} onClick={() => this.setState({screen: 'ChatWindow'})}>Chat</NavItem>
+        <NavItem eventKey={2} onClick={() => this.setState({screen: 'ChatWindow'})}>Messages</NavItem>
       </Nav>
       <Nav pullRight>
-        <NavItem eventKey={2} onClick={this.logout}>Logout</NavItem>
+          <li></li>
+        <NavItem eventKey={3} onClick={() => this.setState({screen: 'About'})}>About</NavItem>
+        <NavItem eventKey={4} onClick={this.logout}>Logout</NavItem>
       </Nav>
       </div>
     )
