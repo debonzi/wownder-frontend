@@ -87,6 +87,14 @@
    font-style: italic;
 }
 
+.chat-char-room-info {
+   /*padding-top: 25px;*/
+   font-size: 10px;
+   margin-left: 70px;
+   font-style: italic;
+}
+
+
 [class^="col-md-"].bubble-chat {
   margin-bottom: 20px;
 }
