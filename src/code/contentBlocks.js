@@ -142,15 +142,4 @@ class CharProfileBlock extends Component {
   )}
 }
 
-class Login extends Component {
-  render(){
-    return(
-    <div>
-    <Jumbotron>
-      <img src={require('../media/landing_battle.jpg')} style={{ display: "block", margin:"0 auto" }} alt="Logo"/>
-    </Jumbotron>
-    </div>
-  )}
-}
-
-export  { CharsBlock, CharProfileBlock, Login }
+export  { CharsBlock, CharProfileBlock }

@@ -1,0 +1,151 @@
+.navbar.navbar-inverse {
+  border-radius:0;
+  margin-bottom:10px;
+}
+
+.container.logged {
+  min-height:60%;
+  background-color:rgba(26,16,13,0.5);
+  margin-bottom:10px;
+  padding:10px;
+}
+
+div.portrait {
+  background-color:rgb(52,36,20);
+  border-color:#dd7500;
+  color:white;
+  padding-top:30px;
+  padding-bottom:30px;
+}
+
+div.portrait-config {
+  background-color:rgba(52,36,20,0.71);
+  border:0;
+  /*border-color:#dd7500;*/
+  color:white;
+  padding-top:30px;
+  padding-bottom:30px;
+  margin-bottom:0;
+}
+
+img.portrait {
+  margin-bottom:5px;
+}
+
+div.portrait-name {
+  background-color:rgba(255,255,255,0.1);
+  font-size:20px;
+}
+
+@media (min-width: 1200px) {
+  div.portrait-name {
+    margin:12.5px;
+  }
+}
+
+h3.portrait-name, h4.portrait-name {
+  color:white;
+  margin:0;
+  margin-bottom:20px;
+}
+
+h4.portrait-name {
+  margin-top:20px;
+  margin-bottom:20px;
+}
+
+ul.list-unstyled.portrait {
+  font-size:14px;
+  color:white;
+  margin-top:5px;
+  padding-left:10px;
+  text-align:center;
+}
+
+li.portrait-rating {
+  display:block;
+  /*text-size-adjust:none;*/
+}
+
+.row.row-char-config {
+  border:1px solid rgb(221,117,0);
+  margin:0;
+  border-radius:4px;
+  padding:20px 0px 20px 0px;
+  margin-bottom:20px;
+}
+
+.panel.panel-default.panel-config {
+  background-color:rgba(255,255,255,0.13);
+  color:white;
+  border:0;
+}
+
+.panel-default > .panel-heading {
+  border:0;
+  color:white;
+  background-image:none;
+  background-color:rgb(52,36,20);
+}
+
+.btn-find {
+  color:rgb(255,255,255);
+  background-color:rgba(0,0,0,0.4);
+  border:1px solid transparent;
+  border-color:rgb(255,154,3);
+  border-radius:0px;
+  font-size:18px;
+  padding-top:15px;
+  padding-bottom:15px;
+  /*padding:15px;*/
+  width:100%;
+  margin-bottom:10px;
+  outline:0;
+}
+
+.btn-find-container {
+  text-align:center;
+  padding:0;
+}
+
+@media (min-width: 992px) {
+  .row.row-char-config.row-char-config-bg {
+    background-image:url(https://render-us.worldofwarcraft.com/character/azralon/35/106620963-main.jpg);
+    background-size:cover;
+    background-position:0 60%;
+    background-repeat:no-repeat;
+    height:450px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .row.row-char-config.row-char-config-bg {
+    background-image:url(https://render-us.worldofwarcraft.com/character/azralon/45/153040429-main.jpg);
+    background-size:cover;
+    background-position:0 60%;
+    background-repeat:no-repeat;
+    height:550px;
+    padding-top:65px;
+  }
+}
+
+.btn-add-chat {
+  color:rgb(255,255,255);
+  background-color:rgba(0,0,0,0.86);
+  border:1px solid transparent;
+  border-color:rgb(255,154,3);
+  border-radius:0px;
+  font-size:14px;
+  padding:5px;
+  width:80%;
+  margin-bottom:10px;
+  outline:0;
+}
+
+.ingame-chat {
+  /*border:1px solid rgb(221,117,0);*/
+  background-color:rgba(128,128,128,0.18);
+  font-family:monospace;
+  display:inline-block;
+}
+

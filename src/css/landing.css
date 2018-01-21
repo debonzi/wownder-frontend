@@ -1,0 +1,76 @@
+html {
+  height:100%;
+  /*background-color:rgb(0,0,0);*/
+}
+
+body {
+  height:100%;
+  background-image:url(../media/bg_002.png);
+  /*background-size:contain;*/
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-position:top;
+  background-color:rgb(26,16,13);
+}
+
+.jumbotron {
+  background-color:rgba(0, 0, 0, 0.2);
+  color:white;
+}
+
+#welcome {
+  padding-top:60px;
+}
+
+#landing_title {
+  color:rgb(191,191,191);
+}
+
+.footer-dark {
+  background-color:rgb(50,44,40);
+  position:relative;
+}
+
+.bnlogin-dark {
+  background-color:rgb(40,95,144);
+  border:1px solid transparent;
+  border-color:rgb(36,85,128);
+  border-radius:4px;
+  font-size:20px;
+  padding-right:20px;
+}
+
+.bnlogin-dark:hover {
+  background-color:rgb(36,83,123);
+}
+
+.bnlogin-dark-black {
+  background-color:rgba(0,0,0,0.6);
+  border:1px solid transparent;
+  border-color:rgb(255,154,3);
+  /*border-radius:4px;*/
+  font-size:20px;
+  padding-right:20px;
+  padding-top:10px;
+  padding-bottom:10px;
+  margin-top:40px;
+}
+
+.bnlogin-dark-black:hover {
+  border-color:rgb(201,122,3);
+}
+
+.bnlogin-dark-black:focus {
+  border-color:rgb(201,122,3);
+  outline:0;
+}
+
+.bnlogin-dark-black:active {
+  /*border-color:rgb(201,122,3);*/
+}
+
+.bnlogin-container {
+  width:100%;
+  text-align:center;
+}
+
