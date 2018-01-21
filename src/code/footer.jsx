@@ -36,7 +36,7 @@ class Footer extends React.Component {
 	                        <h3>Source Code</h3>
 	                        <ul>
 	                            <li><a href="#">Application Server</a></li>
-	                            <li><a href="#">Frontend App</a></li>
+	                            <li><a href="https://github.com/debonzi/wownder-frontend">Frontend App</a></li>
 	                        </ul>
 	                    </div>
 	                </div>
