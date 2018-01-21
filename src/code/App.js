@@ -13,6 +13,7 @@ import About from "./about";
 
 import LandingPage from "./landing"
 import CharsPage from "./charsPage"
+import SearchPage from "./searchPage"
 import Footer from "./footer"
 
 
@@ -22,7 +23,7 @@ class ContentManager extends Component {
     this.contentMapper = {
       Login: () => {return <LandingPage login={this.props.login} />},
       CharsBlock: () => {return <CharsPage logout={this.props.logout} profile={this.props.profile} />},
-      CharProfile: () => {return <CharProfileBlock  uuid={this.props.state.uuid} />},
+      CharProfile: () => {return <SearchPage  uuid={this.props.state.uuid} />},
       ChatWindow: () => {return <ChatWindow />},
       About: () => {return <About />}
     }
@@ -110,6 +111,7 @@ logout = () => {
 
     return (
       <div>
+      <ToastContainer />
       <this.WNavBar />
       <ContentManager login={this.login} logout={this.logout} state={this.state} profile={this.showProfile}/>
       <Footer />
