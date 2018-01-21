@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import { Grid, Navbar, Nav, NavItem } from 'react-bootstrap';
-
-import { CharsBlock, CharProfileBlock, Login } from './contentBlocks';
 import {LoktarLoading} from './basicComponents';
+
 import ChatWindow from "./chatWindow";
+
 import About from "./about";
+
+
+import LandingPage from "./landing"
+import CharsPage from "./charsPage"
+import SearchPage from "./searchPage"
+import Footer from "./footer"
 
 
 class ContentManager extends Component {
   constructor(props) {
     super(props)
     this.contentMapper = {
-      Login: () => {return <Login login_url={this.props.state.url} />},
-      CharsBlock: () => {return <CharsBlock profile={this.props.profile} />},
-      CharProfile: () => {return <CharProfileBlock  uuid={this.props.state.uuid} />},
+      Login: () => {return <LandingPage login={this.props.login} />},
+      CharsBlock: () => {return <CharsPage logout={this.props.logout} profile={this.props.profile} />},
+      CharProfile: () => {return <SearchPage  uuid={this.props.state.uuid} />},
       ChatWindow: () => {return <ChatWindow />},
       About: () => {return <About />}
     }
@@ -31,7 +36,6 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.showProfile = this.showProfile.bind(this)
-    this.logout = this.logout.bind(this)
     this.WNavBar = this.WNavBar.bind(this)
 
     this.state = {
@@ -55,45 +59,47 @@ class App extends Component {
     })
   }
 
-  logout() {
+login = () => {
+    console.log("Landing Login", this.state.url)
+    window.location.assign(this.state.url)
+  }
+
+logout = () => {
     let endpoint = process.env.REACT_APP_API_URI + '/api/logout'
     fetch(endpoint, {credentials: 'include'})
     .then(results => {
       return results.json();
     }).then(data => {
       console.log("Logout", data);
-      // window.location.assign("https://www.w3schools.com")
       window.location.reload()
     })
   }
 
   WNavBar() {
     if (this.state.screen === "Login") {
-      return (
-      <Nav pullRight>
-        <NavItem eventKey={1} onClick={() => window.location.assign(this.state.url)}>Login</NavItem>
-      </Nav>
-
-      )
+      return (null)
     }
     return (
-      <div>
-      <Nav>
-        <NavItem eventKey={1} onClick={() => this.setState({screen: 'CharsBlock'})}>Chars</NavItem>
-      </Nav>
-      <Nav>
-        <NavItem eventKey={2} onClick={() => this.setState({screen: 'ChatWindow'})}>Messages</NavItem>
-      </Nav>
-      <Nav pullRight>
-          <li></li>
-        <NavItem eventKey={3} onClick={() => this.setState({screen: 'About'})}>About</NavItem>
-        <NavItem eventKey={4} onClick={this.logout}>Logout</NavItem>
-      </Nav>
-      </div>
+    <nav className="navbar navbar-inverse">
+        <div className="container">
+            <div className="navbar-header"><a className="navbar-brand" href="/"><strong><em>Team</em> #SoloQueue</strong></a><button className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button></div>
+            <div
+                className="collapse navbar-collapse" id="navcol-1">
+                <ul className="nav navbar-nav navbar-left">
+                    <li role="presentation"><a role="button" onClick={() => this.setState({screen: 'CharsBlock'})}> Heroes </a></li>
+                    <li role="presentation"><a role="button" onClick={() => this.setState({screen: 'ChatWindow'})}> Arena Chats</a></li>
+                </ul>
+                <ul className="nav navbar-nav navbar-right">
+                    <li role="presentation"><a role="button" onClick={() => this.logout()}><strong><em>Logout</em></strong></a></li>
+                </ul>
+        </div>
+        </div>
+    </nav>
     )
   }
 
   showProfile(uuid) {
+    console.log("Show Profile")
     this.setState({screen: 'CharProfile', uuid: uuid});
   }
 
@@ -102,23 +108,12 @@ class App extends Component {
 
     return (
       <div>
-        <LoktarLoading isLoading={this.state.isLoading} />
-        <Navbar inverse collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              Wownder
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-          <this.WNavBar />
-          </Navbar.Collapse>
-        </Navbar>
-        <Grid>
-          <ContentManager state={this.state} profile={this.showProfile}/>
-        </Grid>
-      <ToastContainer autoClose={2000}/>
+      <ToastContainer />
+      <this.WNavBar />
+      <ContentManager login={this.login} logout={this.logout} state={this.state} profile={this.showProfile}/>
+      <Footer />
       </div>
+
     );
   }
 }

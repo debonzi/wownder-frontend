@@ -195,7 +195,9 @@ class ChatArea extends React.Component {
 	}
 
 	scrollToBottom = () => {
-	  this.messagesEnd.scrollIntoView();
+	  var elem = document.getElementById('chatArea');
+	  elem.scrollTop = elem.scrollHeight;
+	  // this.messagesEnd.scrollIntoView();
 	}
 
 	componentDidMount() {
@@ -228,7 +230,7 @@ class ChatArea extends React.Component {
 		let conversation = this.buildConversation()
 		this.markReadMsgs()
 		return(
-			<div className="col-md-9 chat-area">
+			<div id="chatArea" className="col-md-9 chat-area">
 				{conversation}
 				<div style={{ float:"left", clear: "both" }} ref={(el) => { this.messagesEnd = el; }}></div>
 		    </div>
@@ -277,8 +279,8 @@ class  ChatInput extends React.Component {
 		      <input type="text" onChange={this.handleMessage} onKeyPress={this.handleKeyPress} ref={(input) => { this.inputText = input; }} value={this.state.message} className="form-control chat-input-msg" id="exampleInputEmail1" placeholder="Message..." />
 		    </div>
 		    <div className="col-md-1 chat-msg">
-		      <button onClick={this.dispatchMessage} type="button" className="btn btn-primary" style={{'width': '100%', 'borderRadius': '0'}}>
-		        <span className="glyphicon glyphicon-send"></span>
+		      <button onClick={this.dispatchMessage} type="button" className="btn btn-chat" style={{'width': '100%', 'borderRadius': '0'}}>
+		        <span className="glyphicon glyphicon-send" style={{color: 'white'}}></span>
 		      </button>
 		    </div>
 		 </div>
@@ -421,20 +423,30 @@ class ChatWindow extends React.Component {
 
 	render() {
 	  return(
-		<div className="chat-container">
-			<div className="row">
-				<ChatOwner owner={this.state.owner } chars={this.state.chars} charSwitch={this.switchChar} />
-			    <ChatHeader room={this.state.active_room}/>
-			</div>
-		<div className="row">
-		  <div className="col-md-3 chat-side-bar">
-			{this.state.rooms}
-		  </div>
-			<ChatArea owner={this.state.owner} room={this.state.active_room} conversation={this.state.conversation} />
-			<ChatInput dispacher={this.sendMessage} room={this.state.active_room} />
-		</div>
+		  	<div className="container logged">
+			  	<div class="alert" role="alert" style={{color: 'white'}}> 
+			  	    <p><strong> Alert!! </strong></p>
+			  	    <p>
+			  	    This area is under development and have some limitions, but it should be able to help you guys to
+			  	    get in touch with each other.
+			  	    </p>
+			  	    <p> <strong>Ass</strong>: Developer. </p>
+			    </div>
+				<div className="chat-container">
+					<div className="row">
+						<ChatOwner owner={this.state.owner } chars={this.state.chars} charSwitch={this.switchChar} />
+					    <ChatHeader room={this.state.active_room}/>
+					</div>
+					<div className="row">
+					  <div className="col-md-3 chat-side-bar">
+						{this.state.rooms}
+					  </div>
+						<ChatArea owner={this.state.owner} room={this.state.active_room} conversation={this.state.conversation} />
+						<ChatInput dispacher={this.sendMessage} room={this.state.active_room} />
+					</div>
 
-		</div>
+				</div>
+			</div>
         )
 	}
 }
