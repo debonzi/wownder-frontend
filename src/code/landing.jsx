@@ -17,7 +17,7 @@ class LandingPage extends React.Component {
 	            <p className="text-justify">Lets band together and fight our way to the top. No more waiting. The Battle Starts Now!!</p>
 	            <div className="bnlogin-container">
 				<button className="bnlogin-dark-black" onClick={this.login}>
-				    <img src={require('../media/battlenet_button_t.png')} width="46px"/>
+				    <img src={require('../media/battlenet_button_t.png')} width="46px" alt="" />
 				    <span> Login to Battle.net </span>
 				</button>
 				</div>

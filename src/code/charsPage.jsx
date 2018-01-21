@@ -10,7 +10,7 @@ class CharPortrait extends React.Component {
   {
     return (
 	    <div className="col-md-3 col-sm-4 col-xs-6" role="button" onClick={() => this.props.onCharClick(this.props.uuid)}>
-	        <div className="thumbnail portrait"><img src={this.props.inset} className="portrait" />
+	        <div className="thumbnail portrait"><img src={this.props.inset} className="portrait" alt="" />
 	            <div className="caption portrait-name">
 	                <h3 className="text-center portrait-name"><strong><em>{this.props.name}</em></strong> </h3>
 	                <ul className="list-unstyled portrait">

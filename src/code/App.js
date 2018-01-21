@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import { Grid, Navbar, Nav, NavItem } from 'react-bootstrap';
-
-import { CharsBlock, CharProfileBlock } from './contentBlocks';
 import {LoktarLoading} from './basicComponents';
 
 import ChatWindow from "./chatWindow";
@@ -85,7 +82,7 @@ logout = () => {
     return (
     <nav className="navbar navbar-inverse">
         <div className="container">
-            <div className="navbar-header"><a className="navbar-brand" href="#"><strong><em>T</em>eam #SoloQueue</strong></a><button className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button></div>
+            <div className="navbar-header"><a className="navbar-brand" href="/"><strong><em>Team</em> #SoloQueue</strong></a><button className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button></div>
             <div
                 className="collapse navbar-collapse" id="navcol-1">
                 <ul className="nav navbar-nav navbar-left">
@@ -93,7 +90,7 @@ logout = () => {
                     <li role="presentation"><a role="button" onClick={() => this.setState({screen: 'ChatWindow'})}> Arena Chats</a></li>
                 </ul>
                 <ul className="nav navbar-nav navbar-right">
-                    <li role="presentation"><a role="button" onClick={() => this.logout}><strong><em>Logout</em></strong></a></li>
+                    <li role="presentation"><a role="button" onClick={() => this.logout()}><strong><em>Logout</em></strong></a></li>
                 </ul>
         </div>
         </div>
